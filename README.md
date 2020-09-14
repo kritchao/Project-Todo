@@ -3,7 +3,7 @@
 1. run npm install on both folder
 2. run npm start on React folder
 3. run node index.js on NodeJS folder
-4. config database properties in config/package.json to allow sequelize to initialize database
+4. config database properties in config/package.json to allow sequelize to initialize database that you want to keep data
 
 ## What is this project
 - My project is build based on NodeJS and React.
@@ -13,3 +13,7 @@
 - using Sequelize as ORM tools to communicate with database
 
 ## Enjoy !
+
+![](Homepage.png)
+![](Profile.png)
+![](TodoLists.png)
