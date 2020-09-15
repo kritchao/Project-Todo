@@ -3,13 +3,17 @@
   position: relative;
 }
 
+.priority:hover {
+  color:red;
+}
 .Form {
   border-radius: 5px;
   font-family: 'Quicksand', sans-serif;
   box-shadow: 5px 10px 20px rgba(0, 0, 0, 0.5);
   background-color: white;
-  margin: 20px;
-  padding: 20px;
+  
+  overflow: auto;
+  height: 100vh;
 }
 
 .Button {

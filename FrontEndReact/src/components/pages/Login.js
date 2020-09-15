@@ -14,7 +14,6 @@ const layout = {
 export default function Login(props) {
 
     const onFinish = values => {
-        console.log('Success:', values);
         const body = {
             username: values.username,
             password: values.password

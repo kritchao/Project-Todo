@@ -8,6 +8,8 @@ import {
     Col,
     Divider,
     Modal,
+    message,
+    Affix
 
 } from 'antd';
 import axios from '../../../config/axios';
@@ -20,12 +22,18 @@ export default function TodoList(props) {
     const [todoList, setTodoList] = useState([]);
     const [inputField, setInputField] = useState("");
     const [detailField, setDetailField] = useState("");
-    const [visible, setVisible] = useState(false)
+    const [visible, setVisible] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
 
     const fetchTodoList = async () => {
         const httpResponse = await axios.get("/todo-list");
         setTodoList(httpResponse.data);
     };
+
+    const handleInfiniteOnLoad = () => {
+
+    }
 
     useEffect(() => {
         fetchTodoList();
@@ -44,56 +52,53 @@ export default function TodoList(props) {
     const deleteTodoItem = async (id) => {
         await axios.delete(`/todo-list/${id}`);
         fetchTodoList();
-    };
-
-    const handleCancel = e => {
-        console.log(e);
-        setVisible(false);
-    };
-
-    const showModal = () => {
-        setVisible(true)
+        message.success('success');
     };
     return (
-        <div className="Form">
-                <Row justify="start">
+        <div>
+            <Row justify="start" style={{backgroundColor:'transparent'}}>
+                <Col>
                     <Col>
-                        <Col>
-                            <Modal
-                                title="Add your Todo List"
-                                visible={visible}
-                                okText={"Submit"}
-                                onOk={addTodoItem}
-                                onCancel={handleCancel}
-                            >
-                                <Row justify="center" style={{ margin: "5px" }}>
-                                    <Col span={3}><Text>Title</Text></Col>
-                                    <Col span={21}><Input required={true} value={inputField} onChange={(e) => setInputField(e.target.value)} /></Col>
-                                </Row>
-                                <Row justify="center" style={{ margin: "5px" }}>
-                                    <Col span={3}>Detail</Col>
-                                    <Col span={21}><TextArea value={detailField} onChange={(e) => setDetailField(e.target.value)}></TextArea></Col>
-                                </Row>
-                            </Modal>
-                        </Col>
-                        <Col>
-                            <Button type='primary' onClick={showModal} style={{marginLeft:"20%"}} >+ Add todo</Button>
-                        </Col>
+                        <Modal
+                            title="Add your Todo List"
+                            visible={visible}
+                            okText={"Submit"}
+                            onOk={addTodoItem}
+                            onCancel={() => setVisible(false)}
+                        >
+                            <Row justify="center" style={{ margin: "5px" }}>
+                                <Col span={3}><Text>Title</Text></Col>
+                                <Col span={21}><Input required={true} value={inputField} onChange={(e) => setInputField(e.target.value)} /></Col>
+                            </Row>
+                            <Row justify="center" style={{ margin: "5px" }}>
+                                <Col span={3}>Detail</Col>
+                                <Col span={21}><TextArea value={detailField} onChange={(e) => setDetailField(e.target.value)}></TextArea></Col>
+                            </Row>
+                        </Modal>
                     </Col>
-                </Row>
-                <Divider />
-                <Row justify='center'>
-                    <List
-                        style={{ width: '80%', height: '80hv', backgroundColor: 'white' }}
-                        header={<h3 style={{ textAlign: 'left' }}>Your Todo Lists</h3>}
-                        bordered
-                        dataSource={todoList}
-                        renderItem={todo => (
-                            <Todo delete={deleteTodoItem} todo={todo} fetchData={fetchTodoList} />
-                        )}
-                    />
-                </Row>
-            </div>
+                    <Col>
+                    <Affix offsetTop={140}>
+                        <Button type='primary' onClick={() => setVisible(true)} style={{ marginLeft: "20%" }} >+ Add todo</Button>
+                    </Affix>
+                    </Col>
+                </Col>
+            </Row>
+            <Row justify='center' >
+                <div style={{ width: '80%'}}>
+
+                        <List 
+                            header={<h2 style={{ textAlign: 'left'}}><strong>Your Todo Lists</strong></h2>}
+                            bordered={true}
+                            dataSource={todoList}
+                            renderItem={todo => (
+                                <Todo  delete={deleteTodoItem} todo={todo} fetchData={fetchTodoList} />
+
+                            )}
+                        />
+                    
+                </div>
+            </Row>
+        </div>
 
     );
 }

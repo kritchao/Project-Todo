@@ -46,7 +46,7 @@ export default function Profile(props) {
 
     return (
         <Col justify="center" flex="auto">
-            <div className="Form" style={{ height: '80vh' }}>
+            <div>
                 <h2>
                     Profile
             </h2>

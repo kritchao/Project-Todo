@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import TodoList from './TodoList/TodoList';
-import Profile from './Profile'
+import Profile from './Profile';
 import {
     Menu,
     notification,
@@ -10,21 +10,22 @@ import {
 } from 'antd';
 import { EditFilled, ProfileOutlined, LogoutOutlined, UserOutlined, } from '@ant-design/icons';
 import localStorageService from '../../services/localStorageService'
-import Logo from './Logo.png'
+import Logo from './Logo.png';
+import InfiniteScroll from 'react-infinite-scroller';
 
 
 const { SubMenu } = Menu;
 const { Header, Footer, Sider, Content } = Layout;
 
 export default function Index(props) {
-    const [showTodo, setShowTodo] = useState(false);
+    const [showProfile, setShowProfile] = useState(false);
     const [collapsed, setCollapsed] = useState(false);
-    
-    const showProfile = () => {
-        setShowTodo(false);
+
+    const showProfilePage = () => {
+        setShowProfile(true);
     };
     const showTodoList = () => {
-        setShowTodo(true);
+        setShowProfile(false);
     };
 
     const logout = () => {
@@ -41,7 +42,7 @@ export default function Index(props) {
 
     const menu = (
         <Affix offsetTop={10}>
-            <Menu style={{ height: "100%" }} defaultSelectedKeys={['1']} mode="inline">
+            <Menu style={{ height: "100%" }} defaultSelectedKeys={['2']} mode="inline">
                 <SubMenu key="sub1" title={
                     <span>
                         <ProfileOutlined />
@@ -49,7 +50,7 @@ export default function Index(props) {
                     </span>
                 }
                 >
-                    <Menu.Item icon={<UserOutlined />} onClick={showProfile} key="1">Profile</Menu.Item>
+                    <Menu.Item icon={<UserOutlined />} onClick={showProfilePage} key="1">Profile</Menu.Item>
                     <Menu.Item icon={<EditFilled />} onClick={showTodoList} key="2">TodoList</Menu.Item>
                     <Menu.Item icon={<LogoutOutlined />} onClick={logout} danger key="3">Logout</Menu.Item>
                 </SubMenu>
@@ -57,19 +58,21 @@ export default function Index(props) {
         </Affix>
     );
 
-    let contents = (<Profile />);
+    let contents = (<TodoList />);
 
-    if (showTodo) {
-        contents = (<TodoList />);
+    if (showProfile) {
+        contents = (<Profile />);
     };
 
     return (
-        <Layout>
+        <Layout style={{ height: "100vh" }}>
             <Sider collapsible={true} style={{ backgroundColor: 'white' }} collapsed={collapsed} onCollapse={onCollapse}>{menu}</Sider>
-            <Layout>
-                <Header style={{ backgroundColor: "white" }}><Image width="100px" src={Logo} /></Header>
-                <Content>{contents}</Content>
-                <Footer>Giga limited</Footer>
+            <Layout >
+                <Header style={{ backgroundColor: "white", padding: 0 }}><Image width="100px" src={Logo} /></Header>
+                <div className="Form">
+                    <Content>{contents}</Content>
+                    <Footer style={{height:"30px"}}><a href="mailto:gigafinagle@gmail.com">Contact my email</a></Footer>
+                </div>
             </Layout>
         </Layout>
 
