@@ -11,7 +11,6 @@ import {
 import { EditFilled, ProfileOutlined, LogoutOutlined, UserOutlined, } from '@ant-design/icons';
 import localStorageService from '../../services/localStorageService'
 import Logo from './Logo.png';
-import InfiniteScroll from 'react-infinite-scroller';
 
 
 const { SubMenu } = Menu;
