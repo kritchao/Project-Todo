@@ -3,6 +3,7 @@ import { Form, Input, Button, Row, Col, Divider, notification } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import axios from '../../config/axios'
 import { withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
 const layout = {
     labelCol: { xs: 24, sm: 7, md: 6, lg: 6, xl: 5, xxl: 4 },
@@ -15,18 +16,19 @@ function Register(props) {
         const body = {
             username: values.email,
             password: values.password,
-            name: values.nickname
+            name: values.nickname,
+            confirm: values.confirm
         }
         axios.post('/users/register', body)
             .then(res => {
                 notification.success({
                     message: `Welcome ${values.nickname} ! Log-in to see what's going on.`
                 });
-                props.history.push("/login")
+                props.history.push("/login");
             })
             .catch(err => {
                 notification.error({ message: err.response.data.message });
-            })
+            });
     };
 
     return (
@@ -108,9 +110,14 @@ function Register(props) {
                             <Input />
                         </Form.Item>
 
-                        <Button style={{width:"50%"}} className="Button" type="primary" htmlType="submit">
+                        <Button style={{ width: "50%" }} className="Button" type="primary" htmlType="submit">
                             Register
                             </Button>
+                        <Link to="/login">
+                            <Button className="Button" type="link" htmlType="submit">
+                                Already has an account ? just Sign in
+                            </Button>
+                        </Link>
                     </Form>
                 </div>
             </Col>

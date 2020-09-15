@@ -1,21 +1,16 @@
-import TodoPage from '../components/pages/TodoList/TodoList'
+import Index from '../components/pages/Index'
 import LoginPage from '../components/pages/Login'
-import ProfilePage from '../components/pages/Profile'
 import RegisterPage from '../components/pages/Register'
 import Tester from '../components/pages/TestPage'
 
 const components = {
-    todo: {
-        url: "/todo",
-        component: TodoPage
+    index: {
+        url: "/index",
+        component: Index
     },
     login: {
         url: "/login",
         component: LoginPage
-    },
-    profile: {
-        url: "/profile",
-        component: ProfilePage
     },
     register: {
         url: "/register",
@@ -38,10 +33,9 @@ export default {
     },
     user: {
         allowedRoutes: [
-            components.todo,
-            components.profile,
+            components.index,
             components.tester
         ],
-        redirectRoutes: "/todo"
+        redirectRoutes: "/index"
     }
 };

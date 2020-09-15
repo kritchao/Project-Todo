@@ -1,29 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import localStorageService from '../../services/localStorageService';
 import { Col, notification, Modal, Button, Form, Input } from 'antd';
-import jwtDecode from 'jwt-decode';
 import axios from 'axios'
 
 export default function Profile(props) {
-
-    const [name, setName] = useState("");
     const [profile, setProfile] = useState([])
-    const [email, setEmail] = useState("");
     const [visible, setVisible] = useState(false);
+    const [job, setJob] = useState([])
 
     const fetchData = async () => {
         const httpResponse = await axios.get("/users");
         setProfile(httpResponse.data);
     };
+    const fetchJob = async () => {
+        const job = await axios.get("/todo-list");
+        setJob(job.data.length)
+    }
 
     useEffect(() => {
-        const token = localStorageService.getToken();
-        if (token) {
-            fetchData();
-            const user = jwtDecode(token);
-            setName(user.name);
-            setEmail(user.username)
-        }
+        fetchData();
+        fetchJob();
     }, [])
 
     const showModal = () => {
@@ -60,7 +55,7 @@ export default function Profile(props) {
                     <br />
                     <strong>name: </strong>  {profile.name}
                     <br />
-                    <strong>Still got work to do: </strong> {props.job}
+                    <strong>Still got work to do: </strong> {job}
                 </p>
 
                 <Modal

@@ -7,33 +7,20 @@ import {
     Row,
     Col,
     Divider,
-    Menu,
-    notification,
-    Layout,
-    Image,
     Modal,
-    Affix
+
 } from 'antd';
 import axios from '../../../config/axios';
 import Todo from './Todo';
-import { EditFilled, ProfileOutlined, LogoutOutlined, UserOutlined, } from '@ant-design/icons';
-import localStorageService from '../../../services/localStorageService';
-import Profile from '../Profile';
-import Logo from '../Logo.png'
 
 const { Text } = Typography;
-const { SubMenu } = Menu;
-const { Header, Footer, Sider, Content } = Layout;
 const { TextArea } = Input
 
 export default function TodoList(props) {
     const [todoList, setTodoList] = useState([]);
     const [inputField, setInputField] = useState("");
     const [detailField, setDetailField] = useState("");
-    const [showTodo, setShowTodo] = useState(false);
-    const [collapsed, setCollapsed] = useState(false);
     const [visible, setVisible] = useState(false)
-    const [top, setTop] = useState(10);
 
     const fetchTodoList = async () => {
         const httpResponse = await axios.get("/todo-list");
@@ -43,13 +30,6 @@ export default function TodoList(props) {
     useEffect(() => {
         fetchTodoList();
     }, []);
-
-    const logout = () => {
-        localStorageService.removeToken();
-        notification.warning({ message: "You have been logout" });
-        props.setRole("guest")
-    }
-
 
     const addTodoItem = async () => {
         if (inputField) {
@@ -65,15 +45,6 @@ export default function TodoList(props) {
         await axios.delete(`/todo-list/${id}`);
         fetchTodoList();
     };
-    const showTodoList = () => {
-        setShowTodo(true);
-    }
-    const showProfile = () => {
-        setShowTodo(false);
-    }
-    const onCollapse = collapsed => {
-        setCollapsed(collapsed)
-    }
 
     const handleCancel = e => {
         console.log(e);
@@ -83,32 +54,8 @@ export default function TodoList(props) {
     const showModal = () => {
         setVisible(true)
     };
-
-    let menu = (
-        
-        <Affix offsetTop={top}>
-        <Menu style={{ height: "100%" }} defaultSelectedKeys={['1']} mode="inline">
-            <SubMenu key="sub1" title={
-                <span>
-                    <ProfileOutlined />
-                    <span>Menu</span>
-                </span>
-            }
-            >
-                <Menu.Item icon={<UserOutlined />} onClick={showProfile} key="1">Profile</Menu.Item>
-                <Menu.Item icon={<EditFilled />} onClick={showTodoList} key="2">TodoList</Menu.Item>
-                <Menu.Item icon={<LogoutOutlined />} onClick={logout} danger key="3">Logout</Menu.Item>
-            </SubMenu>
-        </Menu>
-        </Affix>
-
-    );
-
-    let contents = (<Profile job={todoList.length} />)
-    if (showTodo) {
-        contents =
-
-            <div className="Form">
+    return (
+        <div className="Form">
                 <Row justify="start">
                     <Col>
                         <Col>
@@ -148,18 +95,5 @@ export default function TodoList(props) {
                 </Row>
             </div>
 
-    }
-    return (
-        <Layout>
-            <Sider collapsible={true} style={{ backgroundColor: 'white' }} collapsed={collapsed} onCollapse={onCollapse}>{menu}</Sider>
-            <Layout>
-                <Header style={{ backgroundColor: "white" }}><Image width="100px" src={Logo} /></Header>
-                <Content>{contents}</Content>
-                <Footer>Giga limited</Footer>
-            </Layout>
-        </Layout>
     );
 }
-
-
-//<Todo delete={deleteTodoItem} todo={todo} fetchData={fetchTodoList} />
