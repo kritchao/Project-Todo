@@ -5,6 +5,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         detail: {
             type: DataTypes.STRING(255)
+        },
+        priority: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
         }
     }, {
         tableName: 'todolists',

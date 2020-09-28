@@ -23,17 +23,12 @@ export default function TodoList(props) {
     const [inputField, setInputField] = useState("");
     const [detailField, setDetailField] = useState("");
     const [visible, setVisible] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [hasMore, setHasMore] = useState(true);
 
     const fetchTodoList = async () => {
-        const httpResponse = await axios.get("/todo-list");
-        setTodoList(httpResponse.data);
+        const todoList = await axios.get("/todo-list");
+        setTodoList(todoList.data);
     };
 
-    const handleInfiniteOnLoad = () => {
-
-    }
 
     useEffect(() => {
         fetchTodoList();
@@ -55,8 +50,8 @@ export default function TodoList(props) {
         message.success('success');
     };
     return (
-        <div>
-            <Row justify="start" style={{backgroundColor:'transparent'}}>
+        <div style={{marginBottom:"50px"}}>
+            <Row justify="start" style={{ backgroundColor: 'transparent' }}>
                 <Col>
                     <Col>
                         <Modal
@@ -77,25 +72,22 @@ export default function TodoList(props) {
                         </Modal>
                     </Col>
                     <Col>
-                    <Affix offsetTop={140}>
-                        <Button type='primary' onClick={() => setVisible(true)} style={{ marginLeft: "20%" }} >+ Add todo</Button>
-                    </Affix>
+
                     </Col>
                 </Col>
             </Row>
             <Row justify='center' >
-                <div style={{ width: '80%'}}>
+                <div style={{ width: '80%' }}>
 
-                        <List 
-                            header={<h2 style={{ textAlign: 'left'}}><strong>Your Todo Lists</strong></h2>}
-                            bordered={true}
-                            dataSource={todoList}
-                            renderItem={todo => (
-                                <Todo  delete={deleteTodoItem} todo={todo} fetchData={fetchTodoList} />
-
-                            )}
-                        />
-                    
+                    <List
+                        header={<h2 style={{ textAlign: 'left' }}><strong>Your Todo Lists</strong></h2>}
+                        bordered={true}
+                        dataSource={todoList}
+                        renderItem={todo => (
+                            <Todo delete={deleteTodoItem} todo={todo} fetchData={fetchTodoList} />
+                        )}
+                    ><Button type='dashed' onClick={() => setVisible(true)} style={{marginBottom:"20px",marginTop:"20px", width:"90%"}} >+ Add your list</Button></List>
+            
                 </div>
             </Row>
         </div>

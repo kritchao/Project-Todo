@@ -22,7 +22,8 @@ export default function Todo(props) {
     const [changeDetail, setChangeDetail] = useState(props.todo.detail);
     const [visible, setVisible] = useState(false);
     const [color, setColor] = useState("")
-    const [tipsTitle, setTipsTitle] = useState("This is important ?")
+    const [showOption, setShowOption] = useState(false)
+    const [priority, setPriority] = useState(props.todo.priority)
 
     const updateTodoItem = async (id) => {
         await axios.put(`/todo-list/${id}`, { task: changeInput, detail: changeDetail });
@@ -32,16 +33,44 @@ export default function Todo(props) {
         message.success('success');
     };
 
-    const setPriority = () => {
-        console.log()
-        if (color === "") {
-            setColor("#f5222d");
-            setTipsTitle("")
+    const changePriority = (id) => {
+        axios.put(`/todo-list/${id}`, { priority: !priority })
+        .then(setPriority(!priority))
+        
+    }
+
+    const handleColor = () => {
+        if (priority) {
+            return {color: "#f5222d"};
         } else {
-            setColor("")
-            setTipsTitle("This is important ?")
+            return {color: "black"}
         }
     }
+
+    let option = (<List.Item.Meta
+        style={{cursor: 'pointer'}}
+        avatar={
+            <>
+                <Popconfirm
+                    title="Already done? this task will be deleted"
+                    onConfirm={() => props.delete(props.todo.id)}
+                    okText="Yes"
+                    cancelText="No"
+                >
+
+                    <CheckOutlined style={{ color: "#52c41a", cursor: 'pointer' }} /><br />
+                </Popconfirm>
+                <Tooltip mouseEnterDelay="0.75" title="important ?">
+                    <BellOutlined className="priority"
+                        onClick={()=>changePriority(props.todo.id)}
+                        style={handleColor()}
+                    />
+                </Tooltip>
+            </>
+        }
+        title={<Row onClick={()=>setVisible(true)}>{props.todo.task}</Row>}
+        description={<Row onClick={()=>setVisible(true)}>{props.todo.detail}</Row>}
+    />)
 
     return (
         <Row justify='center'>
@@ -51,7 +80,7 @@ export default function Todo(props) {
                     actions={[
                         <>
                             <Modal
-                                title="Add your Todo List"
+                                title="Edit your Todo List"
                                 visible={visible}
                                 okText={"Submit"}
                                 onOk={() => updateTodoItem(props.todo.id)}
@@ -67,34 +96,10 @@ export default function Todo(props) {
                                 </Row>
 
                             </Modal>
-                            <Button icon={<EditOutlined />} size='small' onClick={() => setVisible(true)} />
                         </>
                     ]}
                 >
-                    <List.Item.Meta
-                        avatar={
-                            <>
-                                <Popconfirm
-                                    title="Already done? this task will be deleted"
-                                    onConfirm={() => props.delete(props.todo.id)}
-                                    okText="Yes"
-                                    cancelText="No"
-                                >
-
-                                    <CheckOutlined style={{ color: "#52c41a", cursor: 'pointer' }} /><br />
-                                </Popconfirm>
-                                <Tooltip title={tipsTitle}>
-                                    <BellOutlined className="priority"
-                                        onClick={setPriority}
-                                        style={{ color: color, }}
-                                    />
-                                </Tooltip>
-                            </>
-                        }
-                        title={props.todo.task}
-                        description={props.todo.detail}
-
-                    />
+                    {option}
                 </List.Item>
             </Col>
         </Row>

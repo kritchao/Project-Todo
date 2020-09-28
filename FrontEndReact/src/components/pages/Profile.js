@@ -45,11 +45,11 @@ export default function Profile(props) {
     }
 
     return (
-        <Col justify="center" flex="auto">
+        <Col justify="center" style={{height:"90vh"}}>
             <div>
                 <h2>
                     Profile
-            </h2>
+                </h2>
                 <p>
                     <strong>Email: </strong> {profile.username}
                     <br />
