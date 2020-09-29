@@ -23,6 +23,7 @@ export default function TodoList(props) {
     const [inputField, setInputField] = useState("");
     const [detailField, setDetailField] = useState("");
     const [visible, setVisible] = useState(false);
+    const [timeField, setTimeField] = useState("")
 
     const fetchTodoList = async () => {
         const todoList = await axios.get("/todo-list");
@@ -42,6 +43,8 @@ export default function TodoList(props) {
         setVisible(false);
         setInputField("");
         setDetailField("");
+        console.log(timeField)
+        setTimeField("")
     };
 
     const deleteTodoItem = async (id) => {
@@ -62,12 +65,16 @@ export default function TodoList(props) {
                             onCancel={() => setVisible(false)}
                         >
                             <Row justify="center" style={{ margin: "5px" }}>
-                                <Col span={3}><Text>Title</Text></Col>
-                                <Col span={21}><Input required={true} value={inputField} onChange={(e) => setInputField(e.target.value)} /></Col>
+                                <Col span={4}><Text>Title</Text></Col>
+                                <Col span={20}><Input required={true} value={inputField} onChange={(e) => setInputField(e.target.value)} /></Col>
                             </Row>
                             <Row justify="center" style={{ margin: "5px" }}>
-                                <Col span={3}>Detail</Col>
-                                <Col span={21}><TextArea value={detailField} onChange={(e) => setDetailField(e.target.value)}></TextArea></Col>
+                                <Col span={4}>Detail</Col>
+                                <Col span={20}><TextArea value={detailField} onChange={(e) => setDetailField(e.target.value)}></TextArea></Col>
+                            </Row>
+                            <Row>
+                                <Col span={4}>Date and Time</Col>
+                                <Col span={20}><Input type='datetime-local' onChange={(e)=> setTimeField(e.target.value)} /></Col>
                             </Row>
                         </Modal>
                     </Col>

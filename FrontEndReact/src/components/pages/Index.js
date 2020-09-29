@@ -18,7 +18,7 @@ const { Header, Footer, Sider, Content } = Layout;
 
 export default function Index(props) {
     const [showProfile, setShowProfile] = useState(false);
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed, setCollapsed] = useState(true);
 
     const showProfilePage = () => {
         setShowProfile(true);
