@@ -51,10 +51,10 @@ export default function Login(props) {
                             </Title>
 
                         <Form.Item label="Email"  name="username" rules={[{ required: true, message: 'Please input your username!' }]}>
-                            <Input />
+                            <Input style={{width:'95%'}} />
                         </Form.Item>
                         <Form.Item label="Password" name="password" rules={[{ required: true, message: 'Please input your password!' }]} >
-                            <Input.Password />
+                            <Input.Password style={{width:'95%'}} />
                         </Form.Item>
 
                             <Button className="Button" style={{width:"50%"}} type="primary" htmlType="submit">

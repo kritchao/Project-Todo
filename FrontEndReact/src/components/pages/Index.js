@@ -11,6 +11,7 @@ import {
 import { EditFilled, ProfileOutlined, LogoutOutlined, UserOutlined, } from '@ant-design/icons';
 import localStorageService from '../../services/localStorageService'
 import Logo from './Logo.png';
+import Important from './TodoList/Important'
 
 
 const { SubMenu } = Menu;
@@ -19,13 +20,20 @@ const { Header, Footer, Sider, Content } = Layout;
 export default function Index(props) {
     const [showProfile, setShowProfile] = useState(false);
     const [collapsed, setCollapsed] = useState(true);
+    const [showImpList, setShowImpList] = useState(false);
 
     const showProfilePage = () => {
+        setShowImpList(false)
         setShowProfile(true);
     };
     const showTodoList = () => {
+        setShowImpList(false)
         setShowProfile(false);
     };
+    const showImpListPage = () => {
+        setShowProfile(false)
+        setShowImpList(true)
+    }
 
     const logout = () => {
         localStorageService.removeToken();
@@ -41,7 +49,7 @@ export default function Index(props) {
 
     const menu = (
         <Affix offsetTop={10}>
-            <Menu style={{ height: "100%" }} defaultSelectedKeys={['2']} mode="inline">
+            <Menu style={{ height: "100%" }} mode="inline" theme="dark" inlineCollapsed='false'> 
                 <SubMenu key="sub1" title={
                     <span>
                         <ProfileOutlined />
@@ -50,8 +58,12 @@ export default function Index(props) {
                 }
                 >
                     <Menu.Item icon={<UserOutlined />} onClick={showProfilePage} key="1">Profile</Menu.Item>
-                    <Menu.Item icon={<EditFilled />} onClick={showTodoList} key="2">TodoList</Menu.Item>
-                    <Menu.Item icon={<LogoutOutlined />} onClick={logout} danger key="3">Logout</Menu.Item>
+                    
+                        <SubMenu icon={<EditFilled />} key="sub2" ke defaultSelectedKeys={['2']} title="Todo List">
+                            <Menu.Item onClick={showTodoList} key="2">All Task</Menu.Item>
+                            <Menu.Item onClick={showImpListPage} key="3">Important Task</Menu.Item>
+                        </SubMenu>
+                    <Menu.Item icon={<LogoutOutlined />} onClick={logout} danger key="4">Logout</Menu.Item>
                 </SubMenu>
             </Menu>
         </Affix>
@@ -63,9 +75,13 @@ export default function Index(props) {
         contents = (<Profile />);
     };
 
+    if (showImpList) {
+         contents = (<Important />);
+    };
+
     return (
         <Layout style={{ height: "100vh" }}>
-            <Sider collapsible={true} style={{ backgroundColor: 'white' }} collapsed={collapsed} onCollapse={onCollapse}>{menu}</Sider>
+            <Sider collapsible={true} style={{ backgroundColor: '#001529' }} collapsed={collapsed} onCollapse={onCollapse}>{menu}</Sider>
             <Layout >
                 <Header style={{ backgroundColor: "white", padding: 0 }}><Image width="100px" src={Logo} /></Header>
                 <div className="Form">

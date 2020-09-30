@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-    Button,
     Row,
     Col,
     Input,
@@ -9,10 +8,12 @@ import {
     List,
     message,
     Popconfirm,
-    Tooltip
+    Tooltip,
+    DatePicker 
 } from 'antd';
-import { EditOutlined, CheckOutlined, BellOutlined } from '@ant-design/icons'
+import { CheckOutlined, BellOutlined } from '@ant-design/icons'
 import axios from 'axios';
+import moment from 'moment';
 
 const { Text } = Typography;
 const { TextArea } = Input;
@@ -21,12 +22,13 @@ export default function Todo(props) {
     const [changeInput, setChangeInput] = useState(props.todo.task);
     const [changeDetail, setChangeDetail] = useState(props.todo.detail);
     const [visible, setVisible] = useState(false);
-    const [color, setColor] = useState("")
-    const [showOption, setShowOption] = useState(false)
     const [priority, setPriority] = useState(props.todo.priority)
+    const [changeDate, setChangeDate] = useState(props.todo.date)
+
+    const date = new Date(changeDate);
 
     const updateTodoItem = async (id) => {
-        await axios.put(`/todo-list/${id}`, { task: changeInput, detail: changeDetail });
+        await axios.put(`/todo-list/${id}`, { task: changeInput, detail: changeDetail, date:changeDate });
         console.log(props.todo)
         props.fetchData();
         setVisible(false);
@@ -35,42 +37,23 @@ export default function Todo(props) {
 
     const changePriority = (id) => {
         axios.put(`/todo-list/${id}`, { priority: !priority })
-        .then(setPriority(!priority))
-        
+            .then(setPriority(!priority))
+
     }
 
     const handleColor = () => {
         if (priority) {
-            return {color: "#f5222d"};
+            return { color: "#f5222d" };
         } else {
-            return {color: "black"}
+            return { color: "black" }
         }
     }
 
-    let option = (<List.Item.Meta
-        style={{cursor: 'pointer'}}
-        avatar={
-            <>
-                <Popconfirm
-                    title="Already done? this task will be deleted"
-                    onConfirm={() => props.delete(props.todo.id)}
-                    okText="Yes"
-                    cancelText="No"
-                >
-
-                    <CheckOutlined style={{ color: "#52c41a", cursor: 'pointer' }} /><br />
-                </Popconfirm>
-                <Tooltip mouseEnterDelay="0.75" title="important ?">
-                    <BellOutlined className="priority"
-                        onClick={()=>changePriority(props.todo.id)}
-                        style={handleColor()}
-                    />
-                </Tooltip>
-            </>
+    const handleTime = () => {
+        if(date <= moment() ) {
+            return "#f5222d"
         }
-        title={<Row onClick={()=>setVisible(true)}>{props.todo.task}</Row>}
-        description={<Row onClick={()=>setVisible(true)}>{props.todo.detail}</Row>}
-    />)
+    }
 
     return (
         <Row justify='center'>
@@ -87,19 +70,51 @@ export default function Todo(props) {
                                 onCancel={() => setVisible(false)}
                             >
                                 <Row justify="center" style={{ margin: "5px" }}>
-                                    <Col span={3}><Text>Title</Text></Col>
-                                    <Col span={21}><Input value={changeInput} onChange={(e) => setChangeInput(e.target.value)} /></Col>
+                                    <Col span={4}><Text>Title</Text></Col>
+                                    <Col span={20}><Input value={changeInput} onChange={(e) => setChangeInput(e.target.value)} /></Col>
                                 </Row>
                                 <Row justify="center" style={{ margin: "5px" }}>
-                                    <Col span={3}>Detail</Col>
-                                    <Col span={21}><TextArea value={changeDetail} onChange={(e) => setChangeDetail(e.target.value)}></TextArea></Col>
+                                    <Col span={4}>Detail</Col>
+                                    <Col span={20}><TextArea value={changeDetail} onChange={(e) => setChangeDetail(e.target.value)}></TextArea></Col>
                                 </Row>
-
+                                <Row>
+                                    <Col span={4}>Date and Time</Col>
+                                    <Col span={20}><DatePicker
+                                    style={{width:'80%', margin: "5px"}}
+                                    format='MMMM Do YYYY, h:mm'
+                                    disabledDate={props.disabledTime}
+                                    showTime
+                                    onChange={(e) => setChangeDate(e)} /></Col>
+                                </Row>
                             </Modal>
+                            <p style={{color:handleTime()}}>{date.getHours()}:{(date.getMinutes()<10?'0':'') + date.getMinutes()}  {date.toDateString()}</p>
                         </>
                     ]}
                 >
-                    {option}
+                    <List.Item.Meta
+                        style={{ cursor: 'pointer' }}
+                        avatar={
+                            <>
+                                <Popconfirm
+                                    title="Already done? this task will be deleted"
+                                    onConfirm={() => props.delete(props.todo.id)}
+                                    okText="Yes"
+                                    cancelText="No"
+                                >
+
+                                    <CheckOutlined style={{ color: "#52c41a", cursor: 'pointer' }} /><br />
+                                </Popconfirm>
+                                <Tooltip mouseEnterDelay="0.75" title="important ?">
+                                    <BellOutlined className="priority"
+                                        onClick={() => changePriority(props.todo.id)}
+                                        style={handleColor()}
+                                    />
+                                </Tooltip>
+                            </>
+                        }
+                        title={<p onClick={() => setVisible(true)}>{props.todo.task}</p>}
+                        description={<p onClick={() => setVisible(true)}>{props.todo.detail}</p>}
+                    />
                 </List.Item>
             </Col>
         </Row>

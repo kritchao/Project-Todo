@@ -1,17 +1,23 @@
 const db = require('../models');
 
 const getTodoList = async (req, res) => {
-    const todoList1 = await db.TodoList.findAll({ where: { user_id: req.user.id, priority: 1 } })
-    const todoList2 = await db.TodoList.findAll({ where: { user_id: req.user.id, priority: 0 } })
+    const todoList1 = await db.TodoList.findAll({ where: { user_id: req.user.id, priority: true }, order: [['date', 'ASC']] })
+    const todoList2 = await db.TodoList.findAll({ where: { user_id: req.user.id, priority: false }, order: [['date', 'ASC']] })
     const todoList = todoList1.concat(todoList2)
     res.status(200).send(todoList);
 };
+
+const getImpList = async (req, res) => {
+    const todoList3 = await db.TodoList.findAll({ where: { user_id: req.user.id, priority: true }, order: [['date', 'ASC']] })
+    res.status(200).send(todoList3);
+}
 
 const addTodoList = async (req, res) => {
     const newTodo = await db.TodoList.create({
         task: req.body.task,
         detail: req.body.detail,
-        user_id: req.user.id
+        user_id: req.user.id,
+        date: req.body.date
     });
 
     res.status(201).send(newTodo);
@@ -35,12 +41,14 @@ const updateTodoList = async (req, res) => {
     const newTask = req.body.task;
     const newDetail = req.body.detail;
     const newPriority = req.body.priority
+    const newDate = req.body.date
     const targetTodo = await db.TodoList.findOne({ where: { id: targetId, user_id: req.user.id } });
     if (targetTodo) {
         await targetTodo.update({
             task: newTask,
             detail: newDetail,
-            priority: newPriority
+            priority: newPriority,
+            date: newDate
         });
         res.status(200).send(newTask)
     } else {
@@ -53,4 +61,5 @@ module.exports = {
     addTodoList,
     deleteTodoList,
     updateTodoList,
+    getImpList
 };

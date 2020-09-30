@@ -1,7 +1,6 @@
 import Index from '../components/pages/Index'
 import LoginPage from '../components/pages/Login'
 import RegisterPage from '../components/pages/Register'
-import Tester from '../components/pages/TestPage'
 
 const components = {
     index: {
@@ -16,10 +15,6 @@ const components = {
         url: "/register",
         component: RegisterPage
     },
-    tester: {
-        url: "/test",
-        component: Tester
-    }
 };
 
 export default {
@@ -34,7 +29,6 @@ export default {
     user: {
         allowedRoutes: [
             components.index,
-            components.tester
         ],
         redirectRoutes: "/index"
     }

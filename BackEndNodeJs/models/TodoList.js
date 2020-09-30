@@ -9,9 +9,14 @@ module.exports = (sequelize, DataTypes) => {
         priority: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
+        },
+        date: {
+            type: DataTypes.DATE,
         }
+
     }, {
         tableName: 'todolists',
+        timeStamp: false
     });
 
     model.associate = models => {

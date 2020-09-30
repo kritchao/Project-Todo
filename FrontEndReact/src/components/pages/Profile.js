@@ -12,7 +12,7 @@ export default function Profile(props) {
         setProfile(httpResponse.data);
     };
     const fetchJob = async () => {
-        const job = await axios.get("/todo-list");
+        const job = await axios.get("/todo-list/all");
         setJob(job.data.length)
     }
 

@@ -18,7 +18,7 @@ const { Text } = Typography;
 const { TextArea } = Input;
 
 
-export default function TodoList(props) {
+export default function TodoList() {
     const [todoList, setTodoList] = useState([]);
     const [inputField, setInputField] = useState("");
     const [detailField, setDetailField] = useState("");
@@ -27,10 +27,9 @@ export default function TodoList(props) {
     const [emptyContent, setEmptyContent] = useState("")
 
     const fetchTodoList = async () => {
-        const todoLists = await axios.get("/todo-list/all");
-        setTodoList(todoLists.data);
-        console.log(todoLists.data.length)
-        if (todoLists.data.length === 0) setEmptyContent(<p>You don't have any task, try create one ?</p>)
+        const todoList = await axios.get("/todo-list/imp");
+        setTodoList(todoList.data);
+        if (todoList.data.length === 0) setEmptyContent(<p>You don't have any important task.</p>)
         else setEmptyContent("")
     };
 
@@ -40,9 +39,8 @@ export default function TodoList(props) {
 
     const addTodoItem = async () => {
         if (inputField) {
-            await axios.post("/todo-list", { task: inputField, detail: detailField, date: timeField })
+            await axios.post("/todo-list", { task: inputField, detail: detailField, priority: 1, date: timeField }).then(fetchTodoList())
         };
-        fetchTodoList()
         setVisible(false);
         setInputField("");
         setDetailField("");
@@ -58,8 +56,6 @@ export default function TodoList(props) {
         fetchTodoList();
         message.success('success');
     };
-
-
     return (
         <div style={{ marginBottom: "50px" }}>
             <Row justify="start" style={{ backgroundColor: 'transparent' }}>
@@ -84,7 +80,7 @@ export default function TodoList(props) {
                                 <Col span={4}>Date and Time</Col>
                                 <Col span={20}><DatePicker
                                     style={{ width: '80%', margin: "5px" }}
-                                    
+                                    defaultValue={moment()}
                                     format='MMMM Do YYYY, h:mm'
                                     disabledDate={disabledDate}
                                     showTime
@@ -103,14 +99,14 @@ export default function TodoList(props) {
 
                     <List
                         header={<h2 style={{ textAlign: 'left', maxWidth: '80%' }}><strong>Your Todo Lists</strong></h2>}
+                        bordered={true}
                         dataSource={todoList}
                         renderItem={todo => (
-                            <Todo delete={deleteTodoItem} todo={todo} disableTime={disabledDate} fetchData={fetchTodoList} />
+                            <Todo delete={deleteTodoItem} todo={todo} fetchData={fetchTodoList} />
                         )}
                     >
                         {emptyContent}
-                        <Button type='dashed' onClick={() => setVisible(true)} style={{ marginBottom: "20px", marginTop: "20px", width: "90%" }} >+ Add your list</Button>
-                    </List>
+                        <Button type='dashed' onClick={() => setVisible(true)} style={{ marginBottom: "20px", marginTop: "20px", width: "90%" }} >+ Add Important list</Button></List>
 
                 </div>
             </Row>

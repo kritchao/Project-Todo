@@ -5,7 +5,8 @@ const passport = require('passport');
 
 const authentication = passport.authenticate("jwt", { session: false });
 
-router.get('/', authentication, todoListContollers.getTodoList);
+router.get('/all', authentication, todoListContollers.getTodoList);
+router.get('/imp', authentication, todoListContollers.getImpList);
 router.post('/', authentication, todoListContollers.addTodoList);
 router.put('/:id', authentication, todoListContollers.updateTodoList);
 router.delete('/:id', authentication, todoListContollers.deleteTodoList);

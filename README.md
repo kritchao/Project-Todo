@@ -13,7 +13,3 @@
 - using Sequelize as ORM tools to communicate with database
 
 ## Enjoy !
-
-![](Homepage.png)
-![](Profile.png)
-![](TodoLists.png)
