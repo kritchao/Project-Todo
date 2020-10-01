@@ -17,7 +17,8 @@ const addTodoList = async (req, res) => {
         task: req.body.task,
         detail: req.body.detail,
         user_id: req.user.id,
-        date: req.body.date
+        date: req.body.date,
+        priority: req.body.priority
     });
 
     res.status(201).send(newTodo);

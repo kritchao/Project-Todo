@@ -39,8 +39,9 @@ export default function TodoList() {
 
     const addTodoItem = async () => {
         if (inputField) {
-            await axios.post("/todo-list", { task: inputField, detail: detailField, priority: 1, date: timeField }).then(fetchTodoList())
+            await axios.post("/todo-list", { task: inputField, detail: detailField, priority: 1, date: timeField })
         };
+        fetchTodoList();
         setVisible(false);
         setInputField("");
         setDetailField("");
@@ -79,8 +80,7 @@ export default function TodoList() {
                             <Row justify="center" style={{ margin: "5px" }}>
                                 <Col span={4}>Date and Time</Col>
                                 <Col span={20}><DatePicker
-                                    style={{ width: '80%', margin: "5px" }}
-                                    defaultValue={moment()}
+                                    style={{ width: '80%' }}
                                     format='MMMM Do YYYY, h:mm'
                                     disabledDate={disabledDate}
                                     showTime
@@ -95,7 +95,7 @@ export default function TodoList() {
                 </Col>
             </Row>
             <Row justify='center'>
-                <div style={{ width: '80%', overflowWrap: 'break-word' }}>
+                <div style={{ width: '60%', overflowWrap: 'break-word' }}>
 
                     <List
                         header={<h2 style={{ textAlign: 'left', maxWidth: '80%' }}><strong>Your Todo Lists</strong></h2>}

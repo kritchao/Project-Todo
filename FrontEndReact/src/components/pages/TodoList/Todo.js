@@ -9,7 +9,7 @@ import {
     message,
     Popconfirm,
     Tooltip,
-    DatePicker 
+    DatePicker
 } from 'antd';
 import { CheckOutlined, BellOutlined } from '@ant-design/icons'
 import axios from 'axios';
@@ -28,7 +28,7 @@ export default function Todo(props) {
     const date = new Date(changeDate);
 
     const updateTodoItem = async (id) => {
-        await axios.put(`/todo-list/${id}`, { task: changeInput, detail: changeDetail, date:changeDate });
+        await axios.put(`/todo-list/${id}`, { task: changeInput, detail: changeDetail, date: changeDate });
         console.log(props.todo)
         props.fetchData();
         setVisible(false);
@@ -50,7 +50,7 @@ export default function Todo(props) {
     }
 
     const handleTime = () => {
-        if(date <= moment() ) {
+        if (date <= moment()) {
             return "#f5222d"
         }
     }
@@ -80,14 +80,15 @@ export default function Todo(props) {
                                 <Row>
                                     <Col span={4}>Date and Time</Col>
                                     <Col span={20}><DatePicker
-                                    style={{width:'80%', margin: "5px"}}
-                                    format='MMMM Do YYYY, h:mm'
-                                    disabledDate={props.disabledTime}
-                                    showTime
-                                    onChange={(e) => setChangeDate(e)} /></Col>
+                                        style={{ width: '80%', margin: "5px" }}
+
+                                        format='MMMM Do YYYY, h:mm'
+                                        disabledDate={props.disabledTime}
+                                        showTime
+                                        onChange={(e) => setChangeDate(e)} /></Col>
                                 </Row>
                             </Modal>
-                            <p style={{color:handleTime()}}>{date.getHours()}:{(date.getMinutes()<10?'0':'') + date.getMinutes()}  {date.toDateString()}</p>
+                            <p style={{ color: handleTime() }}>{date.getHours()}:{(date.getMinutes() < 10 ? '0' : '') + date.getMinutes()}  {date.toDateString()}</p>
                         </>
                     ]}
                 >
@@ -112,7 +113,7 @@ export default function Todo(props) {
                                 </Tooltip>
                             </>
                         }
-                        title={<p onClick={() => setVisible(true)}>{props.todo.task}</p>}
+                        title={<p onClick={() => setVisible(true)}><strong>{props.todo.task}</strong></p>}
                         description={<p onClick={() => setVisible(true)}>{props.todo.detail}</p>}
                     />
                 </List.Item>

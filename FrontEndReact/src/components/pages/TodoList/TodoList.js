@@ -18,7 +18,7 @@ const { Text } = Typography;
 const { TextArea } = Input;
 
 
-export default function TodoList(props) {
+export default function TodoList() {
     const [todoList, setTodoList] = useState([]);
     const [inputField, setInputField] = useState("");
     const [detailField, setDetailField] = useState("");
@@ -29,9 +29,9 @@ export default function TodoList(props) {
     const fetchTodoList = async () => {
         const todoLists = await axios.get("/todo-list/all");
         setTodoList(todoLists.data);
-        console.log(todoLists.data.length)
-        if (todoLists.data.length === 0) setEmptyContent(<p>You don't have any task, try create one ?</p>)
+        if (todoLists.data.length === 0) setEmptyContent(<p>Your Task Is Empty. </p>)
         else setEmptyContent("")
+
     };
 
     useEffect(() => {
@@ -59,9 +59,8 @@ export default function TodoList(props) {
         message.success('success');
     };
 
-
     return (
-        <div style={{ marginBottom: "50px" }}>
+        <div style={{ marginBottom: "50px", height: '100%' }}>
             <Row justify="start" style={{ backgroundColor: 'transparent' }}>
                 <Col>
                     <Col>
@@ -83,8 +82,7 @@ export default function TodoList(props) {
                             <Row justify="center" style={{ margin: "5px" }}>
                                 <Col span={4}>Date and Time</Col>
                                 <Col span={20}><DatePicker
-                                    style={{ width: '80%', margin: "5px" }}
-                                    
+                                    style={{ width: '80%' }}
                                     format='MMMM Do YYYY, h:mm'
                                     disabledDate={disabledDate}
                                     showTime
@@ -99,13 +97,19 @@ export default function TodoList(props) {
                 </Col>
             </Row>
             <Row justify='center'>
-                <div style={{ width: '80%', overflowWrap: 'break-word' }}>
+                <div style={{ width: '60%', overflowWrap: 'break-word' }}>
 
                     <List
                         header={<h2 style={{ textAlign: 'left', maxWidth: '80%' }}><strong>Your Todo Lists</strong></h2>}
+                        bordered
                         dataSource={todoList}
                         renderItem={todo => (
-                            <Todo delete={deleteTodoItem} todo={todo} disableTime={disabledDate} fetchData={fetchTodoList} />
+                            <Todo
+                                delete={deleteTodoItem}
+                                todo={todo}
+                                disableTime={disabledDate}
+                                fetchData={fetchTodoList}
+                            />
                         )}
                     >
                         {emptyContent}
@@ -115,6 +119,5 @@ export default function TodoList(props) {
                 </div>
             </Row>
         </div>
-
     );
 }

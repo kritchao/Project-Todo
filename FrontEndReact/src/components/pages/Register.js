@@ -33,7 +33,7 @@ function Register(props) {
 
     return (
         <Row justify="center" >
-            <Col xs={23} sm={23} md={23} lg={14} xl={14} xxl={12}>
+            <Col xs={23} sm={23} md={23} lg={14} xl={14} xxl={14}>
                 <div
                     className="Form"
                 >
@@ -49,6 +49,7 @@ function Register(props) {
                         style={{ width: "100%" }}
                     >
                         <Form.Item
+                            style={{ width: "95%" }}
                             name="email"
                             label="E-mail"
                             rules={[
@@ -66,6 +67,7 @@ function Register(props) {
                         </Form.Item>
 
                         <Form.Item
+                            style={{ width: "95%" }}
                             name="password"
                             label="Password"
                             rules={[
@@ -80,6 +82,7 @@ function Register(props) {
                         </Form.Item>
 
                         <Form.Item
+                            style={{ width: "95%"}}
                             name="confirm"
                             label="Confirm Password"
                             hasFeedback
@@ -103,6 +106,7 @@ function Register(props) {
                         </Form.Item>
 
                         <Form.Item
+                            style={{ width: "95%" }}
                             name="nickname"
                             label={<span>Nickname&nbsp;</span>}
                             rules={[{ required: true, message: 'Please input your nickname!', whitespace: true }]}
