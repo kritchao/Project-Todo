@@ -7,7 +7,6 @@ import {
     Layout,
     Image,
     Affix,
-    Row
 } from 'antd';
 import { EditFilled, ProfileOutlined, LogoutOutlined, UserOutlined, } from '@ant-design/icons';
 import localStorageService from '../../services/localStorageService'
@@ -60,7 +59,7 @@ export default function Index(props) {
                 >
                     <Menu.Item icon={<UserOutlined />} onClick={showProfilePage} key="1">Profile</Menu.Item>
                     
-                        <SubMenu icon={<EditFilled />} key="sub2" ke defaultSelectedKeys={['2']} title="Todo List">
+                        <SubMenu icon={<EditFilled />} key="sub2" defaultSelectedKeys={['2']} title="Todo List">
                             <Menu.Item onClick={showTodoList} key="2">All Task</Menu.Item>
                             <Menu.Item onClick={showImpList} key="3">Important Task</Menu.Item>
                         </SubMenu>
