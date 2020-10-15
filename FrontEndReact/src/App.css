@@ -1,7 +1,6 @@
 .App {
   text-align: center;
   position: relative;
-  height: 100vh;
 }
 
 .priority:hover {
@@ -10,6 +9,12 @@
 .Form {
   font-family: 'Quicksand', sans-serif;
   background-color: white;
+  padding-top: 50px;
+  padding-bottom: 15px;
+  margin-top: 50px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
 }
 
 .Button {

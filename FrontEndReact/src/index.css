@@ -1,6 +1,4 @@
 body {
-  height: 100%;
-  margin: 0px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 background-image: linear-gradient(to bottom, #0823CE 0%, #C470C5 100%);

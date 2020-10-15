@@ -7,13 +7,14 @@ import {
     Layout,
     Image,
     Affix,
+    Typography
 } from 'antd';
 import { EditFilled, ProfileOutlined, LogoutOutlined, UserOutlined, } from '@ant-design/icons';
 import localStorageService from '../../services/localStorageService'
 import Logo from './Logo.png';
 import Important from './TodoList/Important'
 
-
+const { Text } = Typography;
 const { SubMenu } = Menu;
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -84,7 +85,10 @@ export default function Index(props) {
                 <Header style={{ backgroundColor: "white", padding: 0 }}><Image onClick={showTodoList} width="100px" src={Logo} /></Header>
                 <div className="Form">
                     <Content>{contents}</Content>
-                    <Footer style={{height:"30px"}}><a href="mailto:gigafinagle@gmail.com">Contact my email</a></Footer>
+                    <Footer style={{height:"30px"}}>
+                        <a href="mailto:gigafinagle@gmail.com">Contact my email</a>< br/>
+                        <Text type='secondary' >Kritchao Chantakorn</Text>
+                    </Footer>
                 </div>
             </Layout>
         </Layout>
