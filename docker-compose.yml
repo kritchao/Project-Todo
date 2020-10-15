@@ -1,0 +1,37 @@
+version: '3'
+services:
+    nodejs-server:
+        depends_on:
+            - mysql
+        build: 
+            context: ./BackEndNodeJs/
+        container_name: Back-End
+        ports:
+            - "8000:8000"
+        volumes:
+            - .:/app/api/
+            - /app/api/node_modules
+
+    react-ui:
+        depends_on:
+            - mysql
+        build: 
+            context: ./FrontEndReact/
+        ports:
+            - "3000:3000"
+        container_name: React_App
+        stdin_open: true
+        volumes:
+            - .:/app/my-app/
+            - /app/my-app/node_modules
+
+    mysql:
+        image: mysql:latest
+        container_name: todolist_database
+        environment:
+            MYSQL_USER: user
+            MYSQL_PASSWORD: password
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_DATABASE: todolist_database
+        ports:
+            - '3307:3306'

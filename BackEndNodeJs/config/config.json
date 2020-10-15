@@ -1,23 +1,10 @@
 {
   "development": {
-    "username": "root",
-    "password": "password",
-    "database": "TodoList Database",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
-  },
-  "test": {
-    "username": "root",
-    "password": "password",
-    "database": "TodoList Database",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
-  },
-  "production": {
     "username": "user",
     "password": "password",
-    "database": "TodoList Database",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "database": "todolist_database",
+    "host": "mysql",
+    "dialect": "mysql",
+    "port": "3306"
   }
 }

@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/todo-list', todoListRoutes);
 app.use('/users', userRoutes)
 
-db.sequelize.sync({alter:true}).then(() => {
+db.sequelize.sync().then(() => {
     app.listen(process.env.PORT, () => {
         console.log(`Server is running at port ${process.env.PORT}`);
     });
