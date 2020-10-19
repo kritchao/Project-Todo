@@ -9,6 +9,7 @@ import {
     Modal,
     message,
     DatePicker,
+    InputNumber,
 } from 'antd';
 import axios from '../../../config/axios';
 import Todo from './Todo';
@@ -25,18 +26,19 @@ export default function TodoList() {
     const [visible, setVisible] = useState(false);
     const [timeField, setTimeField] = useState("")
     const [emptyContent, setEmptyContent] = useState("")
+    const [pageSize, setPageSize] = useState(10)
 
     const fetchTodoList = async () => {
         const todoLists = await axios.get("/todo-list/all");
         setTodoList(todoLists.data);
-        if (todoLists.data.length === 0) setEmptyContent(<p>Your Task Is Empty. </p>)
+        if (todoLists.data.length === 0) setEmptyContent(<p style={{marginTop:"15px"}}>Your Task Is Empty. </p>)
         else setEmptyContent("")
 
     };
 
     useEffect(() => {
         fetchTodoList();
-    }, []);
+    }, [pageSize]);
 
     const addTodoItem = async () => {
         if (inputField) {
@@ -58,6 +60,10 @@ export default function TodoList() {
         fetchTodoList();
         message.success('success');
     };
+
+    const onChangePageSize = (value) => {
+        setPageSize(value)
+    }
 
     return (
         <div style={{ marginBottom: "50px", height: '100%' }}>
@@ -100,8 +106,17 @@ export default function TodoList() {
                 <div style={{ width: '60%', overflowWrap: 'break-word' }}>
 
                     <List
-                        header={<h2 style={{ textAlign: 'left', maxWidth: '80%' }}><strong>Your Todo Lists</strong></h2>}
+                        header={
+                            <Row>
+                                <Col  span={20}><h2 style={{textAlign:'left'}}><strong>Your Todo Lists</strong></h2></Col>
+                                <Col style={{textAlign:'right'}} span={4}>
+                                    <Text type='secondary'>page size</Text>
+                                    <InputNumber size='small' min={1} defaultValue={pageSize} onChange={onChangePageSize}></InputNumber>
+                                </Col>
+                            </Row>
+                        }
                         bordered
+                        pagination={{ pageSize: pageSize }}
                         dataSource={todoList}
                         renderItem={todo => (
                             <Todo

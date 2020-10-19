@@ -9,6 +9,7 @@ import {
     Modal,
     message,
     DatePicker,
+    InputNumber
 } from 'antd';
 import axios from '../../../config/axios';
 import Todo from './Todo';
@@ -25,17 +26,18 @@ export default function TodoList() {
     const [visible, setVisible] = useState(false);
     const [timeField, setTimeField] = useState("")
     const [emptyContent, setEmptyContent] = useState("")
+    const [pageSize, setPageSize] = useState(10)
 
     const fetchTodoList = async () => {
         const todoList = await axios.get("/todo-list/imp");
         setTodoList(todoList.data);
-        if (todoList.data.length === 0) setEmptyContent(<p>You don't have any important task.</p>)
+        if (todoList.data.length === 0) setEmptyContent(<p style={{ marginTop: "15px" }}>You don't have any important task.</p>)
         else setEmptyContent("")
     };
 
     useEffect(() => {
         fetchTodoList();
-    }, []);
+    }, [pageSize]);
 
     const addTodoItem = async () => {
         if (inputField) {
@@ -57,6 +59,10 @@ export default function TodoList() {
         fetchTodoList();
         message.success('success');
     };
+    const changePageSize = (value) => {
+        setPageSize(value)
+    }
+
     return (
         <div style={{ marginBottom: "50px" }}>
             <Row justify="start" style={{ backgroundColor: 'transparent' }}>
@@ -98,7 +104,16 @@ export default function TodoList() {
                 <div style={{ width: '60%', overflowWrap: 'break-word' }}>
 
                     <List
-                        header={<h2 style={{ textAlign: 'left', maxWidth: '80%' }}><strong>Your Todo Lists</strong></h2>}
+                        header={
+                            <Row>
+                                <Col span={20}><h2 style={{ textAlign: 'left' }}><strong>Your Todo Lists</strong></h2></Col>
+                                <Col style={{ textAlign: 'right' }} span={4}>
+                                    <Text type='secondary'>page size</Text>
+                                    <InputNumber size='small' min={1} defaultValue={pageSize} onChange={changePageSize}></InputNumber>
+                                </Col>
+                            </Row>
+                        }
+                        pagination={{pageSize:pageSize}}
                         bordered={true}
                         dataSource={todoList}
                         renderItem={todo => (

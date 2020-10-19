@@ -87,7 +87,7 @@ export default function Index(props) {
                     <Content>{contents}</Content>
                     <Footer style={{height:"30px"}}>
                         <a href="mailto:gigafinagle@gmail.com">Contact my email</a>< br/>
-                        <Text type='secondary' >Kritchao Chantakorn</Text>
+                        <Text type='secondary' >  Kritchao Chantakorn</Text>
                     </Footer>
                 </div>
             </Layout>
