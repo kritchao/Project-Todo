@@ -103,7 +103,7 @@ export default function TodoList() {
                 </Col>
             </Row>
             <Row justify='center'>
-                <div style={{ width: '60%', overflowWrap: 'break-word' }}>
+                <div style={{ width: '75%', overflowWrap: 'break-word' }}>
 
                     <List
                         header={
