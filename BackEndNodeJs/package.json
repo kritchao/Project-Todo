@@ -19,7 +19,7 @@
     "firebase-admin": "^9.4.1",
     "firebase-functions": "^3.12.0",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "mysql2": "^2.1.0",
     "nodemon": "^2.0.4",
     "passport": "^0.4.1",
