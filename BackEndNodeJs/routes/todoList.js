@@ -9,6 +9,7 @@ router.get('/all', authentication, todoListContollers.getTodoList);
 router.get('/imp', authentication, todoListContollers.getImpList);
 router.post('/', authentication, todoListContollers.addTodoList);
 router.put('/:id', authentication, todoListContollers.updateTodoList);
+router.put('/imp/:id', authentication, todoListContollers.togglePriority)
 router.delete('/:id', authentication, todoListContollers.deleteTodoList);
 
 module.exports = router;

@@ -9,7 +9,8 @@ import {
     Modal,
     message,
     DatePicker,
-    InputNumber
+    InputNumber,
+    Spin
 } from 'antd';
 import axios from '../../../config/axios';
 import Todo from './Todo';
@@ -27,12 +28,14 @@ export default function TodoList() {
     const [timeField, setTimeField] = useState("")
     const [emptyContent, setEmptyContent] = useState("")
     const [pageSize, setPageSize] = useState(10)
+    const [loading,setLoading] = useState(true)
 
     const fetchTodoList = async () => {
         const todoList = await axios.get("/todo-list/imp");
         setTodoList(todoList.data);
         if (todoList.data.length === 0) setEmptyContent(<p style={{ marginTop: "15px" }}>You don't have any important task.</p>)
         else setEmptyContent("")
+        setLoading(false)
     };
 
     useEffect(() => {
@@ -102,26 +105,28 @@ export default function TodoList() {
             </Row>
             <Row justify='center'>
                 <div style={{ width: '75%', overflowWrap: 'break-word' }}>
-
-                    <List
-                        header={
-                            <Row>
-                                <Col span={20}><h2 style={{ textAlign: 'left' }}><strong>Your Todo Lists</strong></h2></Col>
-                                <Col style={{ textAlign: 'right' }} span={4}>
-                                    <Text type='secondary'>page size</Text>
-                                    <InputNumber size='small' min={1} defaultValue={pageSize} onChange={changePageSize}></InputNumber>
-                                </Col>
-                            </Row>
-                        }
-                        pagination={{pageSize:pageSize}}
-                        bordered={true}
-                        dataSource={todoList}
-                        renderItem={todo => (
-                            <Todo delete={deleteTodoItem} todo={todo} fetchData={fetchTodoList} />
-                        )}
-                    >
-                        {emptyContent}
-                        <Button type='dashed' onClick={() => setVisible(true)} style={{ marginBottom: "20px", marginTop: "20px", width: "90%" }} >+ Add Important list</Button></List>
+                    <Spin spinning={loading}>
+                        <List
+                            header={
+                                <Row>
+                                    <Col span={20}><h2 style={{ textAlign: 'left' }}><strong>Your Todo Lists</strong></h2></Col>
+                                    <Col style={{ textAlign: 'right' }} span={4}>
+                                        <Text type='secondary'>page size</Text>
+                                        <InputNumber size='small' min={1} defaultValue={pageSize} onChange={changePageSize}></InputNumber>
+                                    </Col>
+                                </Row>
+                            }
+                            pagination={{ pageSize: pageSize }}
+                            bordered={true}
+                            dataSource={todoList}
+                            renderItem={todo => (
+                                <Todo delete={deleteTodoItem} todo={todo} fetchData={fetchTodoList} />
+                            )}
+                        >
+                            {emptyContent}
+                            <Button type='dashed' onClick={() => setVisible(true)} style={{ marginBottom: "20px", marginTop: "20px", width: "90%" }} >+ Add Important list</Button>
+                        </List>
+                    </Spin>
 
                 </div>
             </Row>

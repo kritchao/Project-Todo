@@ -9,6 +9,6 @@ const authentication = passport.authenticate("jwt", { session: false });
 router.get('/',authentication, userController.getUserInfo)
 router.post('/register', userController.registerUser)
 router.post('/login', userController.loginUser)
-router.put('/changePassword', userController.changePassword)
+router.put('/changePassword', authentication, userController.changePassword)
 
 module.exports = router;

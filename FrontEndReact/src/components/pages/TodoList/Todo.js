@@ -36,7 +36,7 @@ export default function Todo(props) {
     };
 
     const changePriority = (id) => {
-        axios.put(`/todo-list/${id}`, { priority: !priority })
+        axios.put(`/todo-list/imp/${id}`, { priority: !priority })
             .then(setPriority(!priority))
 
     }

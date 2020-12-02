@@ -1,35 +1,45 @@
-const db = require('../models');
+const db = require('./index')
+const todoList_db = db.collection('todoList');
+
+
+const addTodoList = async (req, res) => {
+    const newTodo = todoList_db.doc();
+    await newTodo.set({
+        id: newTodo.id,
+        user_id: req.user,
+        task: req.body.task,
+        detail: req.body.detail,
+        date: req.body.date,
+        priority: "0"
+    });
+    res.status(201).send({ message: "added todo-List" });
+};
 
 const getTodoList = async (req, res) => {
-    const todoList1 = await db.TodoList.findAll({ where: { user_id: req.user.id, priority: true }, order: [['date', 'ASC']] })
-    const todoList2 = await db.TodoList.findAll({ where: { user_id: req.user.id, priority: false }, order: [['date', 'ASC']] })
-    const todoList = todoList1.concat(todoList2)
-    res.status(200).send(todoList);
+    const target = await todoList_db.where('user_id', '==', req.user).get()
+    const result = [];
+    target.forEach(doc => {
+        result.push(doc.data())
+    })
+    res.status(200).send(result);
 };
 
 const getImpList = async (req, res) => {
-    const todoList3 = await db.TodoList.findAll({ where: { user_id: req.user.id, priority: true }, order: [['date', 'ASC']] })
-    res.status(200).send(todoList3);
+    const target = await todoList_db.where('user_id', '==', req.user).where('priority', '==', true).get()
+    const result = [];
+    target.forEach(doc => {
+        result.push(doc.data())
+    })
+    res.status(200).send(result);
 }
 
-const addTodoList = async (req, res) => {
-    const newTodo = await db.TodoList.create({
-        task: req.body.task,
-        detail: req.body.detail,
-        user_id: req.user.id,
-        date: req.body.date,
-        priority: req.body.priority
-    });
-
-    res.status(201).send(newTodo);
-};
 
 const deleteTodoList = async (req, res) => {
-    const targetId = Number(req.params.id);
-    const targetTodo = await db.TodoList.findOne({ where: { id: targetId, user_id: req.user.id } })
-    if (targetTodo) {
-        await targetTodo.destroy();
-        res.status(204).send();
+    const targetId = req.params.id
+    const target = await todoList_db.where('user_id', '==', req.user).get()
+    if (!target.empty) {
+        await todoList_db.doc(targetId).delete();
+        res.status(204).send({ message: "deleted" });
     } else {
         res.status(404).send({ message: "todo list not found" })
     }
@@ -38,29 +48,43 @@ const deleteTodoList = async (req, res) => {
 
 
 const updateTodoList = async (req, res) => {
-    const targetId = Number(req.params.id);
+    const targetId = req.params.id;
     const newTask = req.body.task;
     const newDetail = req.body.detail;
-    const newPriority = req.body.priority
     const newDate = req.body.date
-    const targetTodo = await db.TodoList.findOne({ where: { id: targetId, user_id: req.user.id } });
-    if (targetTodo) {
-        await targetTodo.update({
+    const target = await todoList_db.where('user_id', '==', req.user).get()
+    if (!target.empty) {
+        await todoList_db.doc(targetId).update({
             task: newTask,
             detail: newDetail,
-            priority: newPriority,
             date: newDate
         });
-        res.status(200).send(newTask)
+        res.status(200).send({ message: "updated" })
     } else {
         res.status(404).send({ message: "todo list not found" })
     }
 };
+
+const togglePriority = async (req, res) => {
+    const targetId = req.params.id;
+    const newPriority = req.body.priority
+    const target = await todoList_db.where('user_id', '==', req.user).get()
+    if (!target.empty) {
+        await todoList_db.doc(targetId).update({
+            priority: newPriority
+        });
+        res.status(200).send({ message: "updated" })
+    } else {
+        res.status(404).send({ message: "todo list not found" })
+    }
+
+}
 
 module.exports = {
     getTodoList,
     addTodoList,
     deleteTodoList,
     updateTodoList,
-    getImpList
+    getImpList,
+    togglePriority
 };
